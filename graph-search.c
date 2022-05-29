@@ -7,23 +7,6 @@
 
 int visited[MAX_VERTICES];
 
-///////////함수선언//////////////////
-
-//DFS//
-void graph_init(GraphType* g); //그래프 초기화
-void insert_vertex(GraphType* g, int v); //정점 삽입
-void insert_edge(GraphType* g, int u, int v); //간선 삽입
-void dfs_list(GraphType* g, int v);// 깊이우선탐색
-//BFS//
-void init(QueueType *q); //큐 초기화
-int is_empty(QueueType *q); //비었는지 확인
-int is_full(QueueType *q); // 찼는지 확인
-void enqueue(QueueType *q, element item); //큐에 데이터 입력
-element dequeue(QueueType *q); //큐에서 삭제
-element peek(QueueType *q);//큐에서 삭제
-void bfs_list(GraphType *g, int v); //너비우선탐색
-
-
 typedef struct GraphNode // 연결리스트이므로 노드 생성을 위한 구조체
 {
 	int vertex; //정점=데이터필드
@@ -41,7 +24,24 @@ typedef struct {
 	int  front, rear;
 } QueueType;
 
-void error(char *message) //에러 메시지 출력
+///////////함수선언//////////////////
+
+//DFS//
+void graph_init(GraphType* g); //그래프 초기화
+void insert_vertex(GraphType* g, int v); //정점 삽입
+void insert_edge(GraphType* g, int u, int v); //간선 삽입
+void dfs_list(GraphType* g, int v);// 깊이우선탐색
+//BFS//
+void init(QueueType* q); //큐 초기화
+int is_empty(QueueType* q); //비었는지 확인
+int is_full(QueueType* q); // 찼는지 확인
+void enqueue(QueueType* q, element item); //큐에 데이터 입력
+element dequeue(QueueType* q); //큐에서 삭제
+element peek(QueueType* q);//큐에서 삭제
+void bfs_list(GraphType* g, int v); //너비우선탐색
+
+
+void error(char* message) //에러 메시지 출력
 {
 	fprintf(stderr, "%s\n", message);
 	exit(1);
@@ -76,46 +76,46 @@ void insert_edge(GraphType* g, int u, int v) // 간선 삽입 연산, v를 u의 
 	g->adj_list[u] = node;
 }
 
-void init(QueueType *q){//큐 초기화
+void init(QueueType* q) {//큐 초기화
 	q->front = q->rear = 0;
 }
-int is_empty(QueueType *q){ //큐의 공백상태 확인
+int is_empty(QueueType* q) { //큐의 공백상태 확인
 	return (q->front == q->rear);
 }
-int is_full(QueueType *q){ // 큐가 다 찼는지 아닌지 확인
+int is_full(QueueType* q) { // 큐가 다 찼는지 아닌지 확인
 	return ((q->rear + 1) % MAX_QUEUE_SIZE == q->front);
 }
 
-void enqueue(QueueType *q, element item){//큐 삽입
+void enqueue(QueueType* q, element item) {//큐 삽입
 	if (is_full(q))
-		error("큐가 포화상태입니다");
+		printf("큐가 포화상태입니다");
 	q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;//q->rear = (q->rear + 1) % MAX_QUEUE_SIZE 위치로 이동하고 이동한 자리에 삽입할 item을 넣어준다.
 	q->queue[q->rear] = item;
 }
-element dequeue(QueueType *q){//큐 삭제
+element dequeue(QueueType* q) {//큐 삭제
 	if (is_empty(q))
-		error("큐가 공백상태입니다");
+		printf("큐가 공백상태입니다");
 	q->front = (q->front + 1) % MAX_QUEUE_SIZE;//front를 다음 자리로 넘겨주고 그 자리에 있던 원소를 반환해 삭제
 	return q->queue[q->front];
 }
-element peek(QueueType *q){//큐 삭제 함수
+element peek(QueueType* q) {//큐 삭제 함수
 	if (is_empty(q))
-		error("큐가 공백상태입니다");
+		printf("큐가 공백상태입니다");
 	return q->queue[(q->front + 1) % MAX_QUEUE_SIZE];
 }
 
-void dfs_list(GraphType *g, int v){
-	GraphNode *w; 
+void dfs_list(GraphType* g, int v) {
+	GraphNode* w;
 	visited[v] = TRUE; // 정점 v 방문 표시 
-	printf("%d ", v);   
-for (w = g->adj_list[v]; w; w = w->link)// 인접 정점 탐색 
-	if (!visited[w->vertex])//// 미방문 정점 탐색 
-		dfs_list(g, w->vertex); //정점 w에서 DFS 새로시작
+	printf("%d ", v);
+	for (w = g->adj_list[v]; w; w = w->link)// 인접 정점 탐색 
+		if (!visited[w->vertex])//// 미방문 정점 탐색 
+			dfs_list(g, w->vertex); //정점 w에서 DFS 새로시작
 }
 
-void bfs_list(GraphType *g, int v)
+void bfs_list(GraphType* g, int v)
 {
-	GraphNode *w;
+	GraphNode* w;
 	QueueType q;
 	init(&q);   // 큐 초기 화 
 	visited[v] = TRUE;  // 정점 v 방문 표시 
@@ -132,19 +132,20 @@ void bfs_list(GraphType *g, int v)
 	}
 }
 
+
 ///////////////////////////////
 int main()
 {
 
-	GraphType *g = NULL;
-	int u,v;
+	GraphType* g = NULL;
+	int u, v;
 	char command;
 	int key;
 	printf("[----- [leeseonjue] [2021041042] -----]");
 	do {
 		printf("\n\n");
 		printf("----------------------------------------------------------------\n");
-		printf(                      "Graph Searches \n");
+		printf("Graph Searches \n");
 		printf("----------------------------------------------------------------\n");
 		printf(" Initialize Graph = z                                      \n");
 		printf(" Insert Vertex = v             Insert Edge = e              \n");
@@ -155,18 +156,19 @@ int main()
 		scanf(" %c", &command);
 		switch (command) {
 		case 'z': case 'Z':
+
 			break;
 		case 'v': case 'V':
 			break;
 		case 'e': case 'E':
-            break;
+			break;
 		case 'd': case 'D':
-            break;
+			break;
 		case 'b': case 'B':
-            break;
+			break;
 		case 'p': case 'P':
-            break;
-        }
-    }while(command != 'q' && command != 'Q');
-return 1;
-}	
+			break;
+		}
+	} while (command != 'q' && command != 'Q');
+	return 1;
+}
