@@ -40,7 +40,7 @@ element dequeue(QueueType* q); //큐에서 삭제
 element peek(QueueType* q);//큐에서 삭제
 void bfs_list(GraphType* g, int v); //너비우선탐색
 
-
+void Print_Graph();
 void error(char* message) //에러 메시지 출력
 {
 	fprintf(stderr, "%s\n", message);
@@ -156,17 +156,27 @@ int main()
 		scanf(" %c", &command);
 		switch (command) {
 		case 'z': case 'Z':
-
+			graph_init(g);
 			break;
 		case 'v': case 'V':
+			printf("Your Key = ");
+			scanf("%d", &v);
+			insert_vertex(g, v);
 			break;
 		case 'e': case 'E':
+			printf("Your Key = ");
+			scanf("%d", &u);
+			scanf("%d", &v);
+			insert_edge(g, u, v);
 			break;
 		case 'd': case 'D':
+			dfs_list(g, v); 
 			break;
 		case 'b': case 'B':
+			bfs_list(g, v);
 			break;
 		case 'p': case 'P':
+			Print_Graph();
 			break;
 		}
 	} while (command != 'q' && command != 'Q');
